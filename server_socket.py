@@ -13,10 +13,8 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
-            # Receive audio data from client
             audio_data = await websocket.receive_bytes()
 
-            # Transcribe and send the result back
             text = model.transcribe(audio_data, use_fp16=torch.cuda.is_available())
             await websocket.send_text(text)
     except Exception as e:
